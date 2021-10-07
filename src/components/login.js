@@ -20,6 +20,7 @@ export default class Login extends React.Component {
 	}
 
 	signIn(e) {
+		e.preventDefault();
 		const auth = getAuth();
 		signInWithEmailAndPassword(auth, this.email.current.value, this.password.current.value).catch((error) => {
 			console.log(error);

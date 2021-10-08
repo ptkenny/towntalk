@@ -19,14 +19,23 @@ async function uploadPost(title, post) {
 		content: post,
 		author: user.uid,
 		authorUsername: user.displayName,
+		likes: 0,
+		comments: [],
 		timestamp: serverTimestamp(),
 	}).catch((error) => console.log(error));
+}
+
+async function getPost(postID) {
+	const zipCode = await getUserZipCode();
+	const postDoc = doc(getFirestore(), zipCode, postID);
+	return (await getDoc(postDoc)).data();
 }
 
 let firebaseUtils = {
 	getLoggedInUser: getLoggedInUser,
 	getUserZipCode: getUserZipCode,
 	uploadPost: uploadPost,
+	getPost: getPost,
 };
 
 export default firebaseUtils;

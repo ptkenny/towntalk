@@ -7,7 +7,7 @@ import firebaseUtils from '../utils/firebase_utils';
 function PostDetails(props) {
 	return (
 		<Card body>
-			<Link to="/">{props.title}</Link> - {props.author}
+			<Link to={`/posts/${props.id}`}>{props.title}</Link> - {props.author}
 		</Card>
 	);
 }
@@ -25,6 +25,7 @@ export default function RecentPosts(props) {
 							key={doc.data().timestamp}
 							title={doc.data().title}
 							author={doc.data().authorUsername}
+							id={doc.id}
 						/>
 					))
 				);

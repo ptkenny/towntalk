@@ -18,7 +18,11 @@ export default function NavigationBar(props) {
 		<Container fluid style={{ textAlign: 'center' }}>
 			<h1>TownTalk</h1>
 			<Link to="/">Home</Link>•<Link to="/login">Login</Link>•<Link to="/register">Register</Link>•
-			{user && <Link onClick={logOut}>Logout</Link>}
+			{user && (
+				<Link to="/" onClick={logOut}>
+					Logout
+				</Link>
+			)}
 		</Container>
 	);
 

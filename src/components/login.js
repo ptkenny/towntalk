@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack, Form, Button } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 
 export default class Login extends React.Component {
@@ -31,23 +31,25 @@ export default class Login extends React.Component {
 		return this.state.loggedIn ? (
 			<h1>You are already logged in.</h1>
 		) : (
-			<Stack className="mx-auto align-items-center">
-				<Form onSubmit={this.signIn.bind(this)}>
-					<Form.Group>
-						<Form.Label>Email address</Form.Label>
-						<Form.Control type="email" ref={this.email} placeholder="Enter email" />
-					</Form.Group>
+			<Container>
+				<Row>
+					<Col md={{ span: 4, offset: 4 }}>
+						<Form onSubmit={this.signIn.bind(this)} className="my-5">
+							<Form.Group>
+								<Form.Control type="email" ref={this.email} placeholder="Enter email" />
+							</Form.Group>
 
-					<Form.Group>
-						<Form.Label>Password</Form.Label>
-						<Form.Control type="password" ref={this.password} placeholder="Password" />
-					</Form.Group>
+							<Form.Group>
+								<Form.Control type="password" ref={this.password} placeholder="Password" />
+							</Form.Group>
 
-					<Button variant="primary" type="submit" className="w-100 my-3">
-						Sign In
-					</Button>
-				</Form>
-			</Stack>
+							<Button variant="primary" type="submit" className="w-100 my-3">
+								Sign In
+							</Button>
+						</Form>
+					</Col>
+				</Row>
+			</Container>
 		);
 	}
 }

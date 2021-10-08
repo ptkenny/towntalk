@@ -7,7 +7,6 @@ import NavigationBar from './components/navigation_bar';
 import RegistrationPage from './components/registration_page';
 // eslint-disable-next-line
 import app from './firebase';
-import Post from './components/post_page';
 
 function MainView(props) {
 	return (
@@ -21,9 +20,6 @@ function MainView(props) {
 				</Route>
 				<Route path="/register">
 					<RegistrationPage />
-				</Route>
-				<Route path="/posts/:postID">
-					<Post />
 				</Route>
 			</Switch>
 		</div>

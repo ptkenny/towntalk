@@ -1,5 +1,6 @@
 import { getAuth } from '@firebase/auth';
 import { getFirestore, collection, doc, getDoc, addDoc, serverTimestamp } from '@firebase/firestore';
+import { getFunctions, httpsCallable } from 'firebase/functions';
 
 function getLoggedInUser() {
 	return getAuth().currentUser;
@@ -19,10 +20,29 @@ async function uploadPost(title, post) {
 		content: post,
 		author: user.uid,
 		authorUsername: user.displayName,
-		likes: 0,
+		likes: [],
+		dislikes: [],
 		comments: [],
 		timestamp: serverTimestamp(),
 	}).catch((error) => console.log(error));
+}
+
+async function likePost(postID) {
+	const functions = getFunctions();
+	const like = httpsCallable(functions, 'likePost');
+	like({
+		zipCode: await getUserZipCode(),
+		postID: postID,
+	});
+}
+
+async function dislikePost(postID) {
+	const functions = getFunctions();
+	const dislike = httpsCallable(functions, 'dislikePost');
+	dislike({
+		zipCode: await getUserZipCode(),
+		postID: postID,
+	});
 }
 
 async function getPost(postID) {
@@ -36,6 +56,8 @@ let firebaseUtils = {
 	getUserZipCode: getUserZipCode,
 	uploadPost: uploadPost,
 	getPost: getPost,
+	likePost: likePost,
+	dislikePost: dislikePost,
 };
 
 export default firebaseUtils;

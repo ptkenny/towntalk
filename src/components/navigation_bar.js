@@ -1,6 +1,7 @@
 import React from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, Container, Row } from 'react-bootstrap';
 import { getAuth, onAuthStateChanged, signOut } from '@firebase/auth';
+import { Link } from 'react-router-dom';
 
 export default function NavigationBar(props) {
 	let [user, setUser] = React.useState(null);
@@ -12,6 +13,14 @@ export default function NavigationBar(props) {
 	let logOut = () => {
 		signOut(getAuth());
 	};
+
+	return (
+		<Container fluid style={{ textAlign: 'center' }}>
+			<h1>TownTalk</h1>
+			<Link to="/">Home</Link>•<Link to="/login">Login</Link>•<Link to="/register">Register</Link>•
+			{user && <Link onClick={logOut}>Logout</Link>}
+		</Container>
+	);
 
 	return (
 		<Navbar bg="dark" variant="dark">

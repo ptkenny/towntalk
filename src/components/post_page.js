@@ -1,3 +1,4 @@
+import { getAuth, onAuthStateChanged } from '@firebase/auth';
 import React from 'react';
 import { Card, Container } from 'react-bootstrap';
 import { withRouter } from 'react-router';
@@ -12,7 +13,11 @@ class Post extends React.Component {
 	componentDidMount() {
 		const id = this.props.match.params.postID;
 		async function getPostInformation() {
-			this.setState({ post: await firebaseUtils.getPost(id) });
+			onAuthStateChanged(getAuth(), async (user) => {
+				if (user) {
+					this.setState({ post: await firebaseUtils.getPost(id) });
+				}
+			});
 		}
 		getPostInformation.bind(this)();
 	}

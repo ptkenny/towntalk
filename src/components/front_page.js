@@ -22,7 +22,7 @@ export default function FrontPage(props) {
 			<Container>
 				{user && (
 					<div>
-						<Button className="w-100 my-2" variant="primary" onClick={toggleOpen}>
+						<Button className="w-100 my-2" variant="outline-light" onClick={toggleOpen}>
 							Make a Post!
 						</Button>
 					</div>

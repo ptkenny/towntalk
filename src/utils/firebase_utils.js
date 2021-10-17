@@ -1,5 +1,16 @@
 import { getAuth } from '@firebase/auth';
-import { getFirestore, collection, doc, getDoc, addDoc, serverTimestamp } from '@firebase/firestore';
+import {
+	getFirestore,
+	collection,
+	doc,
+	getDoc,
+	addDoc,
+	serverTimestamp,
+	arrayUnion,
+	updateDoc,
+	Timestamp,
+} from '@firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 
 function getLoggedInUser() {
@@ -11,13 +22,14 @@ async function getUserZipCode() {
 	return (await getDoc(userDoc)).data().zipCode;
 }
 
-async function uploadPost(title, post) {
+async function uploadPost(title, post, imageURL) {
 	let user = getLoggedInUser();
 	if (!user) return;
 	let zipCode = await getUserZipCode();
 	addDoc(collection(getFirestore(), zipCode), {
 		title: title,
 		content: post,
+		imageURL: imageURL,
 		author: user.uid,
 		authorUsername: user.displayName,
 		likes: [],
@@ -25,6 +37,12 @@ async function uploadPost(title, post) {
 		comments: [],
 		timestamp: serverTimestamp(),
 	}).catch((error) => console.log(error));
+}
+
+async function uploadImage(image) {
+	const imageRef = ref(getStorage(), `images/${image.name}`);
+	const upload = await uploadBytes(imageRef, image);
+	return getDownloadURL(upload.ref);
 }
 
 async function likePost(postID) {
@@ -45,6 +63,22 @@ async function dislikePost(postID) {
 	});
 }
 
+async function uploadComment(postID, content) {
+	let user = getLoggedInUser();
+	if (!user) return;
+	let zipCode = await getUserZipCode();
+	const postDoc = doc(getFirestore(), `${zipCode}/${postID}`);
+
+	updateDoc(postDoc, {
+		comments: arrayUnion({
+			author: user.uid,
+			authorUsername: user.displayName,
+			content: content,
+			timestamp: Timestamp.now(),
+		}),
+	});
+}
+
 async function getPost(postID) {
 	const zipCode = await getUserZipCode();
 	const postDoc = doc(getFirestore(), zipCode, postID);
@@ -58,6 +92,8 @@ let firebaseUtils = {
 	getPost: getPost,
 	likePost: likePost,
 	dislikePost: dislikePost,
+	uploadComment: uploadComment,
+	uploadImage: uploadImage,
 };
 
 export default firebaseUtils;

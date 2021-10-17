@@ -3,6 +3,7 @@ import { connectAuthEmulator, getAuth } from '@firebase/auth';
 import { connectFirestoreEmulator, getFirestore } from '@firebase/firestore';
 import { connectFunctionsEmulator, getFunctions } from '@firebase/functions';
 import { initializeApp } from 'firebase/app';
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 

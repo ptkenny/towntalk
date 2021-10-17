@@ -1,0 +1,6 @@
+TODO:
+
+1. add image upload for posts
+2. move all firebase functions out of the cloud
+3. add URLs for each post so they can be shared  
+4. create a better looking interface for comments
